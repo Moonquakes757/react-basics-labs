@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 function App() {
   const [ taskState, setTaskState ] = useState({
     tasks: [
-      { id: 1, title: "Dishes", description: "Empty dishwasher", deadline: "Today", done: false },
-      { id: 2, title: "Laundry", description: "Fold clothes and put away", deadline: "Tomorrow", done: false},
-      { id: 3, title: "Tidy up", deadline: "Today", done: false}
+      { id: 1, title: "Dishes", description: "Empty dishwasher", deadline: "Today", done: false, priority: "Low" },
+      { id: 2, title: "Laundry", description: "Fold clothes and put away", deadline: "Tomorrow", done: false, priority: "Medium" },
+      { id: 3, title: "Tidy up", deadline: "Today", done: false, priority: "High" }
     ]
   });
 
@@ -25,6 +25,12 @@ function App() {
     tasks[taskIndex].done = !tasks[taskIndex].done;
     setTaskState({tasks});
     //console.log('${taskindex} ${tasks[taskIndex].done}');
+  }
+
+  const priorityHandler = (taskIndex) => {
+    const tasks = [...taskState.tasks];
+    tasks[taskIndex].priority =!tasks[taskIndex].priority;
+    setTaskState({tasks});
   }
 
   const deleteHandler = (taskIndex) => {
@@ -45,6 +51,9 @@ function App() {
         break;
       case "deadline":
         form.deadline = event.target.value;
+        break;
+      case "priority":
+        form.priority = event.target.value;
         break;
       default: 
         form = formState;
@@ -76,7 +85,9 @@ function App() {
         deadline={task.deadline}
         key={task.id}
         done={task.done}
+        priority={task.priority}
         markDone={() => doneHandler(index)}
+        markPriority={() => priorityHandler(index)}
         deleteTask = {() => deleteHandler(index)}
       />
       ))}
